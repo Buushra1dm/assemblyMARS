@@ -1,0 +1,43 @@
+.data
+
+prompt: .asciiz "Enter number of elements: "
+msg1: .asciiz "Enter number "
+msg2: .asciiz ": "
+output: .asciiz "Average is "
+.text
+.globl main
+main:
+li $v0,4 # 4 is the print string syscall
+la $a0,prompt # Load the address of the string to be printed
+syscall # Print the string
+li $v0,5 # 5 is the read integer syscall
+syscall # Read the integer
+move $t0,$v0 # Store the number in $t0
+
+li $t2,1 # Loop variable
+li $t1,0 # Variable sum
+
+loop: bgt $t2,$t0,exit
+li $v0,4 # 4 is the print string syscall
+la $a0,msg1 # Load the address of the string to be printed
+syscall # Print the string
+li $v0,1 # 1 is the print integer syscall
+move $a0,$t2 # Load the integer to be printed
+syscall # Print the integer
+li $v0,4 # 4 is the print string syscall
+la $a0,msg2 # Load the address of the string to be printed
+syscall # Print the string
+li $v0,5 # 5 is the read integer syscall
+syscall # Read the integer
+add $t1,$t1,$v0 # Add the read value to variable sum
+addi $t2,$t2,1 # Increment loop counter
+b loop # Repeat the loop
+exit: div $t2,$t1,$t0 # $t2 = sum / no.of elements = average
+li $v0,4 # 4 is the print string syscall
+la $a0,output # Load the address of the string to be printed
+syscall # Print the string
+li $v0,1 # 1 is the print integer syscall
+move $a0,$t2 # Load the integer to be printed
+syscall # Print the integer
+li $v0,10 # 10 is the exit program syscall
+syscall # Exit the program

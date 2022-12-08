@@ -1,0 +1,27 @@
+.data
+        message: .asciiz "Enter number N: "
+        newLine:  .asciiz "\n"
+.text
+        li $v0,4
+        la $a0,message  # load address of message
+        syscall         # print the message
+        
+        li $v0,5
+        syscall         # take input number
+        move $t0,$v0    # move the input number to $t0
+        
+        li $t1,1        # load 1 to t1
+loop:   bgt $t1,$t0,DONE        #if t1>N branch to DOME
+        
+        li $v0,1
+        move $a0,$t1
+        syscall         # print value of $t1
+        
+        li $v0,4
+        la $a0,newLine
+        syscall         # print newline character, so that next number will be printed in next line
+        
+        add $t1,$t1,1   # add 1 to t1
+        j loop          # jump to loop again
+
+DONE:   nop     # end the program

@@ -1,0 +1,106 @@
+.data
+prompt: .asciiz "Enter a number: "
+is: .asciiz "Is "
+div_and: .asciiz " divisible by 5 and 6? "
+div_or: .asciiz " divisible by 5 or 6? "
+div_xor: .asciiz " divisible by 5 or 6, but not both? "
+true: .asciiz "true\n"
+false: .asciiz "false\n" 
+
+.text
+main:
+  #prompt and read an integer
+  li $v0, 4      
+  la $a0, prompt
+  syscall
+	
+  li $v0, 5   
+  syscall
+	
+  # move input to $t0
+  move $t0, $v0  
+	
+  li $t5, 5
+  # store the remainder on division by 5 and 6
+  div $t0, $t5
+  mfhi $t1
+  li $t5, 6
+  # store the remainder on division by  6
+  div $t0, $t5
+  mfhi $t2
+	
+  # if remainders are zero, set $t1 and $t2 to 1
+  seq $t1,$t1,$zero
+  seq $t2,$t2,$zero
+	
+  # perform and, or and xor operations on $t1 and $t2
+  and $t3,$t1,$t2
+  or  $t4,$t1,$t2
+  xor $t5,$t1,$t2
+	
+  #print the string "Is"
+  li $v0, 4      
+  la $a0, is
+  syscall		
+  #print input value.
+  li $v0, 1
+  move $a0, $t0
+  syscall  #print the string div_and
+  li $v0, 4      
+  la $a0, div_and
+  syscall	
+  # store the result for AND
+  move $a1,$t3
+  # call printResult to print the result
+  jal printResult	
+	
+  #print the string "Is"		
+  li $v0, 4      
+  la $a0, is
+  syscall	
+  #print input value.
+  li $v0, 1
+  move $a0, $t0
+  syscall   
+  #print the string div_or
+  li $v0, 4      
+  la $a0, div_or
+  syscall		
+  # store the result for OR
+  move $a1,$t4
+  # call printResult to print the result
+  jal printResult
+	
+  #print the string "Is"		
+  li $v0, 4      
+  la $a0, is
+  syscall	
+  #print input value.
+  li $v0, 1
+  move $a0, $t0
+  syscall     
+  #print the string div_xor
+  li $v0, 4      
+  la $a0, div_xor
+  syscall
+  # store the result for XOR
+  move $a1,$t5
+  # call printResult to print the result
+  jal printResult
+	
+  #end the program
+  li $v0, 10
+  syscall
+
+# procedure to print true or false		
+printResult:
+	beqz $a1, f_div	
+	li $v0, 4      
+	la $a0, true
+	syscall
+	jr $ra	
+f_div:
+	li $v0, 4      
+	la $a0, false
+	syscall
+	jr $ra

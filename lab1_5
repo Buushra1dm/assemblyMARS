@@ -1,0 +1,10 @@
+.data
+no1: .word 10 # create a single integer variable with initial value 10
+no2: .word 15
+.text
+lw $t0, no1
+lw $t1, no2
+add $t2, $t0, $t1 # t2=t0+t1
+li $v0,1 # Printing the result stored in t2
+add $a0,$zero, $t2
+syscall 

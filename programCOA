@@ -1,0 +1,94 @@
+.data     # data segment
+str: .asciiz "Enter 3 digits an Octal Number 0-7 :" 
+error: .asciiz "Invalid Input-Enter 3 number from 0-7: "
+output: .asciiz "Octal number in decimal is :" 
+end: .asciiz "\nThank You & Bye "
+.text
+main:
+#initializing values
+li $s1,799		
+li $s2,79	
+li $t4,7          
+li $t3,100
+li $s4,10
+li $t9,0
+#string display
+li $v0,4
+la $a0,str 	
+syscall  #printf ( Enter 3 digits an Octal Number 0-7  )
+Again:
+li $v0,5      # taking str from user
+syscall  
+move $s0,$v0    #$s0=$v0
+
+#getting first digit
+div $s0,$s1 #hi
+mflo $t7       #quotient
+mfhi $s6      #remainder
+
+bgt $t7,$t9,invalid_input    #if 1st digit>7 
+
+div $s0,$t3    
+mflo $t7       #quotient
+mfhi $s6      #remainder
+move $t0,$t7     #maving value from $t7 to $t0
+
+move $s0,$s6   #moving back the remainder to s0
+#getting second digit
+div $s0,$s2   
+mflo $t7       #quotient
+mfhi $s6      #remainder
+
+bgt $t7,$t9,invalid_input   #if 2nd digit >7
+# division str by 10
+div $s0,$s4    
+mfhi $s6      #remainder
+mflo $t7       #quotient
+move $t1,$t7     #moving from $t7 to $t1
+
+move $s0,$s6   #moving the value from $s6 $s0
+#getting 3rd digit
+div $s0,$t4    
+mfhi $s6      #remainder
+mflo $t7       #quotient
+
+bgt $t7,$t9,invalid_input   #if 3rd digit>7
+move $t2,$s6     #moving value from $s6 to $t1
+
+jal conversion #return call
+j exit #call
+conversion:
+li $s1,64 #initializing the values
+li $s2,8
+
+mult $t0,$s1        #mul 1st digit by 64
+mflo $t0                #store them at t0
+mult $t1,$s2        #mul 2nd digit by 8
+mflo $t1                #store them at t1
+
+add $t0,$t0,$t1
+add $t0,$t0,$t2
+
+li $v0,4
+la $a0,output 		
+syscall  #printf ( ctal number in decimal is : )
+
+li $v0,1
+move $a0,$t0		#display the result
+syscall
+
+jr $ra #go to this addres
+
+invalid_input:
+li $v0,4
+la $a0,error		#string display
+syscall #printf error
+
+j Again #call
+exit:
+li $v0,4
+la $a0,end	
+syscall #printf ( Thank You & Bye )
+
+li $v0,10 #exit from program
+syscall

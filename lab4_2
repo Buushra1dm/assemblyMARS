@@ -1,0 +1,20 @@
+.data
+message1: .asciiz "First number is less than second number "
+message2: .asciiz "Second number is less than first number "
+.text
+main:
+addi $t0,$zero ,9
+addi $t1,$zero ,1
+slt $s0,$t0,$t1
+bne $s0, $zero, printMessage
+li $v0,4
+la $a0,message2
+syscall
+j End
+printMessage:
+li $v0,4
+la $a0,message1
+syscall
+End:
+li $v0,10
+syscall

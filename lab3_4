@@ -1,0 +1,71 @@
+.data    
+introduction: .asciiz"Amal-This program will perform simple arithmetic on two integers inputted by user.\n\n"    
+prompt1: .asciiz"Enter first number:"    
+prompt2: .asciiz"Enter second number:"    
+sum: .asciiz"Sum ="    
+difference: .asciiz"\nDifference ="    
+product: .asciiz"\nProduct ="    
+quotient: .asciiz"\nQuotient ="    
+end: .asciiz"\n\nThank You!" 
+.text    
+#To print introduction    
+li $v0,4    
+la $a0,introduction    
+syscall       
+li $v0,4    
+la $a0,prompt1    
+syscall          
+#To read user input    
+li $v0,5    
+syscall    
+#store input from user into any register    
+move $t0,$v0    
+#To ask second number from user    
+li $v0,4    
+la $a0,prompt2    
+syscall    
+#To read user input    
+li $v0,5    
+syscall    
+#store input from user into any register    
+move $t1,$v0    
+#addition of two numbers    
+add $t2,$t0,$t1    
+#display the added numbers    
+li $v0,4    
+la $a0,sum    
+syscall    
+li $v0,1    
+move $a0,$t2    
+syscall    
+#subtraction of two numbers    
+sub $t3,$t0,$t1    
+#display the subtracted numbers    
+li $v0,4    
+la $a0,difference    
+syscall    
+li $v0,1    
+move $a0,$t3    
+syscall       
+#Multiplication of two numbers    
+mul $t4,$t0,$t1    
+#display the multiplied numbers    
+li $v0,4    
+la $a0,product    
+syscall       
+li $v0,1    
+move $a0,$t4    
+syscall     
+#Division of two numbers    
+div $t5,$t0,$t1    
+#display the divided numbers    
+li $v0,4    
+la $a0,quotient    
+syscall       
+li $v0,1    
+add $a0,$zero,$t5    
+syscall    
+#print Thank You    
+li $v0,4    
+la $a0,end    
+syscall

@@ -1,0 +1,43 @@
+.data
+message: .asciiz " greater than "
+mg1:.asciiz "Enter first number: "
+mg2:.asciiz "Enter second number: "
+.text
+main:
+li $v0,4
+la $a0,mg1
+syscall
+li $v0,5
+syscall
+move $s0,$v0 #first number in s0
+li $v0,4
+la $a0,mg2
+syscall
+li $v0,5
+syscall
+move $s1,$v0 #second number in s1
+bgt $s0, $s1,DisplayMsg
+li $v0,1
+move $a0,$s1 #print second number
+syscall
+li $v0,4
+la $a0,message
+syscall
+li $v0,1
+move $a0,$s0 #print first number
+syscall
+j End
+DisplayMsg:
+li $v0,1
+move $a0,$s0 #print first number
+syscall
+li $v0,4
+la $a0,message
+syscall
+li $v0,1
+move $a0,$s1 #print second number
+syscall
+End:
+#End of main
+li $v0,10
+syscall

@@ -1,0 +1,24 @@
+.data
+m1: .asciiz "Enter Your Name : "
+m2: .asciiz "You entered "
+fn: .asciiz ""
+.text
+main:
+#print String
+la $a0,m1
+li $v0,4
+syscall
+#Read String
+li $v0,8
+la $a0, fn
+syscall
+#print Strings
+la $a0,m2
+li $v0,4
+syscall
+la $a0,fn
+li $v0,4
+syscall
+#end program
+li $v0,10
+syscall

@@ -1,0 +1,58 @@
+.data
+str1: .asciiz "Enter number 1:\n"
+str2: .asciiz "Enter number 2:\n"
+str3: .asciiz "Enter number 3:\n"
+str4: .asciiz "\nThe smallest number is:\n"
+.text
+la $a0,str1
+li $v0,4
+syscall
+#accept number 1
+li $v0,5
+syscall
+move $s0,$v0 #save #1 into register s0
+la $a0,str2
+li $v0,4
+syscall
+#accept number 2
+li $v0,5
+syscall
+move $s1,$v0 #save #2 into register s1
+la $a0,str3
+li $v0,4
+syscall
+#accept number 3
+li $v0,5
+syscall
+move $s2,$v0 #save #3 into register s2
+#print the result
+la $a0,str4
+li $v0,4
+syscall
+#compare the two numbers
+ble $s0,$s1,label
+#false condition
+ble $s1,$s2,label_2#comapare another two numbers
+move $a0,$s2 #print #2 since it is smaller
+li $v0,1
+syscall
+j exit
+label:
+ble $s0,$s2,label_1
+#false condition
+move $a0,$s2 #print #2 since it is smaller
+li $v0,1
+syscall
+j exit
+label_1:
+move $a0,$s0 #print #0 since it is smaller
+li $v0,1
+syscall
+j exit
+label_2:
+move $a0,$s1 #print #1 since it is smaller
+li $v0,1
+syscall
+exit:
+li $v0,10
+syscall

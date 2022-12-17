@@ -1,0 +1,23 @@
+.data
+message: .asciiz "The Numbers are Equal"
+message2: .asciiz "The Numbers are Not Equal"
+.text
+main:
+addi $t1,$zero ,6
+addi $t2,$zero ,15
+beq $t1, $t2, numbersEqual
+bne $t1, $t2, numbersdifferent
+li $v0,10
+syscall
+numbersEqual:
+li $v0,4
+la $a0,message
+syscall
+j End
+numbersdifferent:
+li $v0,4
+la $a0,message2
+syscall
+End:
+li $v0,10
+syscall
